@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSockets</title>
+</head>
+<body>
+  <h1>WebSockets Server</h1>
+  <button onclick="startWS()">Start WS</button>
+  <button onclick="stopWS()">Stop WS</button>
+  <script>
+    let socket;
+    let sendInterval;
+    function startWS() {
+      socket = new WebSocket("ws:/localhost:4000/wsserver");
+
+      socket.onopen = () => {
+        socket.onmessage = e => {
+          let element = document.createElement("h2");
+          element.innerHTML = e.data;
+          document.body.appendChild(element);
+        };
+
+        let i = 0;
+        sendInterval = setInterval(() => socket.send(`CLient send message every 2 seconds. Message №${++i}`), 2000);
+      };    
+    }
+    function stopWS() {
+      socket.close();
+      clearInterval(sendInterval);
+    }
+  </script>
+</body>
+</html>

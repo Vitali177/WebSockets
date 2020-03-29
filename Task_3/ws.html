@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSockets</title>
+</head>
+<body>
+  <h1>WebSockets Server</h1>
+    <h3>Number of connected clients: <span>0</span></h3>
+  <script>
+    const socket = new WebSocket("ws:/localhost:4000/wsserver");
+    const numberOfClients = document.querySelector("h3 span");
+
+    socket.onopen = () => {
+      socket.onmessage = e => {
+        if (e.data.indexOf("id") !== -1) {
+          numberOfClients.innerHTML = e.data.split(":")[1];
+        }
+      };
+    }          
+  </script>
+</body>
+</html>
